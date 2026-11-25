@@ -1,9 +1,9 @@
 // Semua teks ada di sini (Indonesia & Inggris). Edit / terjemahkan dengan mudah.
-export const SECTIONS = ['home', 'about', 'journey', 'projects', 'certs', 'contact']
+export const SECTIONS = ['home', 'about', 'journey', 'projects', 'publications', 'certs', 'contact']
 
 export const copy = {
   id: {
-    nav: { home: 'Beranda', about: 'Tentang', journey: 'Perjalanan Belajar', projects: 'Karya Saya', certs: 'Sertifikat', contact: 'Kontak' },
+    nav: { home: 'Beranda', about: 'Tentang', journey: 'Perjalanan Belajar', projects: 'Karya Saya', publications: 'Karya Tulis', certs: 'Sertifikat', contact: 'Kontak' },
     menu: 'Menu', skip: 'Lewati ke konten',
     hero: { line1: 'halo semua', name: 'gita cahya', script: 'Archive', hi: 'hi!', role: 'Mendokumentasikan apa yang kupelajari, kubuat, dan kutemukan sepanjang jalan.', intro: 'Pembelajar yang penasaran, menjelajahi teknologi, pemrograman, dan pemecahan masalah secara kreatif. Ini ruang pribadiku untuk mendokumentasikan apa yang kupelajari, proyek yang kubangun, dan penemuan-penemuan kecil sepanjang perjalananku di Pendidikan Informatika.', cta1: 'Lihat proyek', cta2: 'Unduh CV', tags: ['Kreatif', 'Penasaran', 'Ambisius'] },
     about: {
@@ -23,11 +23,11 @@ export const copy = {
     projects: { semester: 'Semester', empty: 'Belum ada project di semester ini.', learned: 'Yang kupelajari', course: 'Mata kuliah', title: 'Karya Saya', sub: 'Klik kartu untuk melihat masalah, solusi, dan teknologi di balik tiap proyek.', problem: 'Masalah', solution: 'Solusi', tech: 'Tools & Teknologi', features: 'Fitur utama', role: 'Peran', status: 'Status', open: 'Lihat detail', close: 'Tutup detail', demo: 'Live demo', github: 'GitHub', noLink: 'Tautan belum diisi', phTitle: '[NAMA PROYEK]', cat: 'Kategori', desc: '[DESKRIPSI SINGKAT] — ringkasan satu atau dua kalimat.', prob: '[MASALAH] — masalah yang ingin diselesaikan.', sol: '[SOLUSI] — cara kamu menyelesaikannya.', roleV: '[PERANMU]', statusV: 'Segera hadir', image: '[GAMBAR PROYEK]' },
     certs: { title: 'Sertifikat', sub: 'Koleksi dokumen digital. Klik untuk memperbesar.', title1: '[NAMA SERTIFIKAT]', issuer: '[PENERBIT]', year: 'Tahun terbit', cred: 'Tautan kredensial', close: 'Tutup', prev: 'Geser ke kiri', next: 'Geser ke kanan', img: '[GAMBAR SERTIFIKAT]', empty: 'Sertifikat segera hadir.' },
     contact: { title: 'Ayo terhubung.', sub: 'Ayo terhubung, berbagi ide, dan menciptakan sesuatu yang bermakna bersama!', btn: 'Kirim email', footer: 'Dibuat dengan kode, kopi, dan rasa penasaran.', top: 'Kembali ke atas', copyright: '© 2026 Gita Cahya' },
-    pubs: { title: 'Publikasi', link: 'Buka tautan' },
+    pubs: { title: 'Karya Tulis & Proyek Akademik', sub: 'Review paper, makalah, dan kajian akademik yang kutulis. Klik kartu untuk detail.', link: 'Buka tautan', pdf: 'Unduh PDF' },
     ui: { close: 'Tutup', home: 'Beranda', language: 'Bahasa', mainNav: 'Navigasi utama', photoAlt: 'Foto Gita Cahya' },
   },
   en: {
-    nav: { home: 'Home', about: 'About', journey: 'Learning Journey', projects: 'What I Made', certs: 'Certificates', contact: 'Contact' },
+    nav: { home: 'Home', about: 'About', journey: 'Learning Journey', projects: 'What I Made', publications: 'Writing', certs: 'Certificates', contact: 'Contact' },
     menu: 'Menu', skip: 'Skip to content',
     hero: { line1: 'hi there', name: 'gita cahya', script: 'Archive', hi: 'hi!', role: 'Documenting what I learn, create, and discover along the way.', intro: 'A curious learner exploring technology, programming, and creative problem-solving. This is my personal space to document what I learn, the projects I build, and the little discoveries I make throughout my journey in Informatics Education.', cta1: 'See projects', cta2: 'Download CV', tags: ['Creative', 'Curious', 'Ambitious'] },
     about: {
@@ -47,7 +47,7 @@ export const copy = {
     projects: { semester: 'Semester', empty: 'No projects in this semester yet.', learned: 'What I learned', course: 'Course', title: 'What I Made', sub: 'Click a card to see the problem, solution, and technology behind each project.', problem: 'Problem', solution: 'Solution', tech: 'Tools & Technology', features: 'Key features', role: 'Role', status: 'Status', open: 'View details', close: 'Close details', demo: 'Live demo', github: 'GitHub', noLink: 'Link not set yet', phTitle: '[PROJECT NAME]', cat: 'Category', desc: '[SHORT DESCRIPTION] — one or two sentence summary.', prob: '[PROBLEM] — the problem you wanted to solve.', sol: '[SOLUTION] — how you solved it.', roleV: '[YOUR ROLE]', statusV: 'Coming soon', image: '[PROJECT IMAGE]' },
     certs: { title: 'Certificates', sub: 'A collection of digital documents. Click to enlarge.', title1: '[CERTIFICATE NAME]', issuer: '[ISSUER]', year: 'Issue year', cred: 'Credential link', close: 'Close', prev: 'Scroll left', next: 'Scroll right', img: '[CERTIFICATE IMAGE]', empty: 'Certificates are coming soon.' },
     contact: { title: "Let's connect.", sub: "Let's connect, share ideas, and create something meaningful together!", btn: 'Send email', footer: 'Made with code, coffee, and curiosity.', top: 'Back to top', copyright: '© 2026 Gita Cahya' },
-    pubs: { title: 'Publications', link: 'Open link' },
+    pubs: { title: 'Written Works & Academic Projects', sub: 'Review papers, essays, and academic studies I have written. Click a card for details.', link: 'Open link', pdf: 'Download PDF' },
     ui: { close: 'Close', home: 'Home', language: 'Language', mainNav: 'Main navigation', photoAlt: 'Photo of Gita Cahya' },
   },
 }

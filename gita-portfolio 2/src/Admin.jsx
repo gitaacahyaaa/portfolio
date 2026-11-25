@@ -441,11 +441,14 @@ const CFG = {
       { k: 'credential_url', label: 'URL kredensial', type: 'url' }, ORDER, { k: 'image_url', label: 'Gambar sertifikat', type: 'image', folder: 'certificates', wide: true },
       { k: 'status', label: 'Status', type: 'select', options: STATUS },
     ] },
-  pubs: { table: 'publications', add: 'Publikasi baru', order: 'sort_order', asc: true, title: 'title', sub: ['publication_date'], search: ['title', 'description'], defaults: { status: 'published', sort_order: 0 },
+  pubs: { table: 'publications', add: 'Karya tulis baru', order: 'sort_order', asc: true, title: 'title', sub: ['kind', 'publication_date'], search: ['title', 'title_id', 'description', 'kind'], defaults: { status: 'published', sort_order: 0 },
     fields: [
-      { k: 'title', label: 'Judul (EN)', req: true, max: 240 }, { k: 'title_id', label: 'Judul (ID)', max: 240 },
-      { k: 'description', label: 'Deskripsi (EN)', type: 'textarea', max: 4000 }, { k: 'description_id', label: 'Deskripsi (ID)', type: 'textarea', max: 4000 },
-      { k: 'publication_date', label: 'Tanggal publikasi', type: 'date' }, { k: 'external_url', label: 'URL eksternal', type: 'url' }, ORDER,
+      { k: 'title', label: 'Judul (EN)', req: true, max: 240 }, { k: 'title_id', label: 'Judul (ID)', max: 240, help: 'Kosong = pakai versi EN' },
+      { k: 'kind', label: 'Jenis (EN)', max: 80, ph: 'Review Paper / Academic Paper' }, { k: 'kind_id', label: 'Jenis (ID)', max: 80, ph: 'Review Paper / Makalah Akademik' },
+      { k: 'description', label: 'Deskripsi + status (EN)', type: 'textarea', rows: 5, max: 4000, help: 'Boleh beberapa paragraf (Enter = paragraf baru). Tulis status di sini, mis. "Under review at ..."' }, { k: 'description_id', label: 'Deskripsi + status (ID)', type: 'textarea', rows: 5, max: 4000 },
+      { k: 'publication_date', label: 'Tanggal / tahun', type: 'date' }, ORDER,
+      { k: 'external_url', label: 'Link (Google Drive / jurnal / repo)', type: 'url', wide: true, help: 'Disarankan untuk file besar. Pastikan akses Drive: "Anyone with the link".' },
+      { k: 'file_url', label: 'File PDF (unggah)', type: 'file', pdf: true, folder: 'files', wide: true, help: 'Opsional, maks 10 MB. Kalau ada link Drive, boleh dikosongkan.' },
       { k: 'status', label: 'Status', type: 'select', options: STATUS },
     ] },
 }

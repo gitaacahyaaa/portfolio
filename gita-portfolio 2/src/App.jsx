@@ -52,23 +52,23 @@ const Modal = ({ onClose, label, children }) => {
   )
 }
 
-function useActive(ready) {
+function useActive(ready, sections) {
   const [active, setActive] = useState('home')
   const lock = useRef(0)
   useEffect(() => {
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && Date.now() > lock.current && setActive(e.target.id)), { rootMargin: '-45% 0px -50% 0px' })
-    SECTIONS.forEach((s) => { const el = document.getElementById(s); el && io.observe(el) })
+    sections.forEach((s) => { const el = document.getElementById(s); el && io.observe(el) })
     // bagian paling bawah (Kontak) pendek, jadi tandai aktif saat sudah mentok di dasar halaman
-    const end = () => { if (Date.now() > lock.current && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 6) setActive(SECTIONS[SECTIONS.length - 1]) }
+    const end = () => { if (Date.now() > lock.current && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 6) setActive(sections[sections.length - 1]) }
     window.addEventListener('scroll', end, { passive: true })
     return () => { io.disconnect(); window.removeEventListener('scroll', end) }
-  }, [ready])
+  }, [ready, sections.join()])
   // saat menu diklik: langsung aktif, abaikan observer selama animasi scroll
   const pick = (id) => { lock.current = Date.now() + 900; setActive(id) }
   return [active, pick]
 }
 
-function Nav({ t, lang, setLang, active, onPick }) {
+function Nav({ t, lang, setLang, active, onPick, sections }) {
   const [open, setOpen] = useState(false)
   const [stuck, setStuck] = useState(false)
   const ref = useRef(null)
@@ -91,7 +91,7 @@ function Nav({ t, lang, setLang, active, onPick }) {
       <a className="logo" href="#home" aria-label={t.ui.home} onClick={() => { onPick('home'); setOpen(false) }}>✦</a>
       <nav id="main-nav" aria-label={t.ui.mainNav} className={open ? 'open' : ''}>
         <ul>
-          {SECTIONS.map((s) => (
+          {sections.map((s) => (
             <li key={s}>
               <a href={`#${s}`} onClick={() => { onPick(s); setOpen(false) }} aria-current={active === s ? 'true' : undefined}>
                 <span>{t.nav[s]}</span>
@@ -261,18 +261,21 @@ function Certs({ t, CERTS }) {
 }
 
 function Publications({ t, lang, items }) {
-  const title = t.pubs.title
   const [sel, setSel] = useState(null)
+  const p = t.pubs
   const fmt = (d) => (d ? new Date(d).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { year: 'numeric', month: 'short' }) : '')
+  const meta = (x) => [tr(x, 'kind', lang), fmt(x.publication_date)].filter(Boolean)
+  const paras = (x) => String(tr(x, 'description', lang) || '').split(/\n+/).filter(Boolean)
   return (
-    <section id="publications" className="sec projects" aria-labelledby="h-publications">
-      <Head id="h-publications" title={title} />
+    <section id="publications" className="sec projects pubs" aria-labelledby="h-publications">
+      <Head id="h-publications" title={p.title} sub={p.sub} />
       <div className="pgrid">
         {items.map((x, i) => (
-          <Reveal key={x.id} i={i % 4} className="pcard">
+          <Reveal key={x.id} i={i % 4} className="pcard pub">
             <button onClick={() => setSel(x)} aria-label={`${tr(x, 'title', lang)}: ${t.projects.open}`}>
-              <p className="meta"><span>{fmt(x.publication_date)}</span></p>
+              <p className="meta">{meta(x).map((m) => <span key={m}>{m}</span>)}</p>
               <h3>{tr(x, 'title', lang)}</h3>
+              {paras(x)[0] && <p className="pdesc">{paras(x)[0]}</p>}
               <span className="more">{t.projects.open} <ArrowUpRight size={14} /></span>
             </button>
           </Reveal>
@@ -281,10 +284,15 @@ function Publications({ t, lang, items }) {
       <AnimatePresence>
         {sel && (
           <Modal label={tr(sel, 'title', lang)} onClose={() => setSel(null)}>
-            <p className="meta"><span>{fmt(sel.publication_date)}</span></p>
+            <p className="meta">{meta(sel).map((m) => <span key={m}>{m}</span>)}</p>
             <h3>{tr(sel, 'title', lang)}</h3>
-            {tr(sel, 'description', lang) && <p>{tr(sel, 'description', lang)}</p>}
-            {sel.external_url && <div className="links"><a className="btn sm" href={sel.external_url} target="_blank" rel="noreferrer">{t.pubs.link} <ArrowUpRight size={14} /></a></div>}
+            {paras(sel).map((x, i) => <p key={i}>{x}</p>)}
+            {(sel.external_url || sel.file_url) && (
+              <div className="links">
+                {sel.external_url && <a className="btn sm" href={sel.external_url} target="_blank" rel="noreferrer">{p.link} <ArrowUpRight size={14} /></a>}
+                {sel.file_url && <a className="btn sm" href={sel.file_url} target="_blank" rel="noreferrer">{p.pdf} <ArrowUpRight size={14} /></a>}
+              </div>
+            )}
           </Modal>
         )}
       </AnimatePresence>
@@ -416,7 +424,8 @@ export default function App() {
     return () => window.removeEventListener('hashchange', on)
   }, [])
   const current = (journey.find((r) => r.progress === 'current') || {}).semester || 1
-  const [active, pickActive] = useActive(!semView && !(hasSupabase && db === null))
+  const sections = useMemo(() => SECTIONS.filter((x) => x !== 'publications' || pubs.length > 0), [pubs.length])
+  const [active, pickActive] = useActive(!semView && !(hasSupabase && db === null), sections)
   const { scrollYProgress } = useScroll()
   const bar = useSpring(scrollYProgress, { stiffness: 140, damping: 28, mass: 0.2 })
   useEffect(() => { document.documentElement.lang = lang }, [lang])
@@ -434,15 +443,15 @@ export default function App() {
     <UiCtx.Provider value={t.ui}><MotionConfig reducedMotion="user">
       <a className="skip" href="#main">{t.skip}</a>
       <motion.div className="progress" style={{ scaleX: bar }} aria-hidden="true" />
-      <Nav t={t} lang={lang} setLang={setLang} active={semView ? 'journey' : active} onPick={pickActive} />
+      <Nav t={t} lang={lang} setLang={setLang} active={semView ? 'journey' : active} onPick={pickActive} sections={sections} />
       <main id="main">{semView
         ? <SemesterPage t={t} lang={lang} row={journey.find((r) => r.semester === semView) || { semester: semView, progress: 'upcoming', tagline: '', headline: '', lead: '', intro: '', areas: [], tech_learning: [], tech_explored: [], tech_used: [], reflection: '' }} projects={projects.items.filter((x) => x.semester === `Semester ${semView}`)} />
         : <><Hero t={t} socials={socials} cv={gen.cv} photo={gen.photo} />
         <About t={t} />
         <LearningJourney t={t} lang={lang} items={journey} projects={projects.items} />
         <Projects t={t} lang={lang} data={projects} focus={focus} current={current} />
-        <Certs t={t} CERTS={certs} />
         {pubs.length > 0 && <Publications t={t} lang={lang} items={pubs} />}
+        <Certs t={t} CERTS={certs} />
         <Contact t={t} socials={socials} email={email} /></>}</main>
     </MotionConfig></UiCtx.Provider>
   )
