@@ -3201,25 +3201,26 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--rose); outline-
     .sec { padding-inline: max(clamp(20px, 6vw, 100px), calc((100vw - 1700px) / 2)) }
 }
 
-/* ===== Full-page scroll snap (halaman utama) =====
+/* ===== Full-page scroll snap (halaman utama, hanya layar lebar) =====
    Tiap section = satu layar penuh; scroll otomatis "klik" ke section berikutnya.
-   Aktif lewat class html.snap (diatur di App.jsx). Layar kecil memakai 'proximity' supaya konten panjang tetap nyaman. */
-html.snap { scroll-padding-top: 0; scroll-snap-type: y proximity; }
-@media (min-width: 900px) and (min-height: 520px) {
-  html.snap { scroll-snap-type: y mandatory; }
+   Aktif lewat class html.snap (diatur di App.jsx). HP / layar kecil memakai scroll biasa. */
+@media (min-width: 900px) and (min-height: 560px) {
+  html.snap { scroll-padding-top: 0; scroll-snap-type: y mandatory; }
+  html.snap main > section {
+    min-height: 100vh; min-height: 100svh;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  html.snap main > section:not(.hero) {
+    display: flex; flex-direction: column; justify-content: center;
+    padding-top: 104px; padding-bottom: 56px;
+  }
+  html.snap main > section.contact { min-height: calc(100svh - 64px); }
+  html.snap .foot { height: 64px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; }
 }
-html.snap main > section {
-  min-height: 100vh; min-height: 100svh;
-  box-sizing: border-box;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;            /* satu gesture = satu section, tidak loncat melewati */
-}
-html.snap main > section:not(.hero) {
-  display: flex; flex-direction: column; justify-content: center;
-  padding-top: 104px;                  /* ruang untuk navbar */
-  padding-bottom: 56px;
-}
-/* Contact + footer berbagi satu layar */
-html.snap main > section.contact { min-height: calc(100svh - 64px); }
-html.snap .foot { height: 64px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; }
-@media (max-width: 899px) { html.snap main > section.contact { min-height: 100svh } html.snap .foot { height: auto; min-height: 64px } }
+
+/* Sertifikat sedikit (≤ 4): tampil rapi di tengah, tanpa animasi berjalan */
+.cert-static { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; padding: 8px 0 }
+.cert-static .cert { width: min(280px, 82vw) }
+.cert-static .cert:nth-child(even) { margin-top: 0; transform: none }

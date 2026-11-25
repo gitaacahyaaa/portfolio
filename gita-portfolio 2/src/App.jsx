@@ -24,13 +24,16 @@ const Head = ({ id, title, sub }) => <Reveal className="head"><h2 id={id}>{title
 const Ph = ({ label, tone = 'butter', className = '' }) => <div className={`ph ${tone} ${className}`}><span>{label}</span></div>
 
 // Rel bergerak ke samping (berhenti saat hover). Isi diduplikasi agar loop mulus.
-const Marquee = ({ items, render, speed = 40, reverse = false, label }) => (
-  <div className="mq" role="region" aria-label={label} tabIndex={0}>
-    <div className={`mq-track${reverse ? ' rev' : ''}`} style={{ '--s': `${speed}s` }}>
-      {[0, 1].map((n) => <div className="mq-set" key={n} aria-hidden={n ? 'true' : undefined}>{items.map((x, i) => render(x, `${n}-${i}`))}</div>)}
+const Marquee = ({ items, render, speed = 40, reverse = false, label, min = 0 }) => {
+  const base = min && items.length ? Array.from({ length: Math.max(1, Math.ceil(min / items.length)) }, () => items).flat() : items
+  return (
+    <div className="mq" role="region" aria-label={label} tabIndex={0}>
+      <div className={`mq-track${reverse ? ' rev' : ''}`} style={{ '--s': `${speed}s` }}>
+        {[0, 1].map((n) => <div className="mq-set" key={n} aria-hidden={n ? 'true' : undefined}>{base.map((x, i) => render(x, `${n}-${i}`))}</div>)}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 const Modal = ({ onClose, label, children }) => {
   const ui = useContext(UiCtx)
@@ -49,7 +52,7 @@ const Modal = ({ onClose, label, children }) => {
   )
 }
 
-function useActive() {
+function useActive(ready) {
   const [active, setActive] = useState('home')
   const lock = useRef(0)
   useEffect(() => {
@@ -59,7 +62,7 @@ function useActive() {
     const end = () => { if (Date.now() > lock.current && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 6) setActive(SECTIONS[SECTIONS.length - 1]) }
     window.addEventListener('scroll', end, { passive: true })
     return () => { io.disconnect(); window.removeEventListener('scroll', end) }
-  }, [])
+  }, [ready])
   // saat menu diklik: langsung aktif, abaikan observer selama animasi scroll
   const pick = (id) => { lock.current = Date.now() + 900; setActive(id) }
   return [active, pick]
@@ -231,14 +234,18 @@ function Certs({ t, CERTS }) {
   return (
     <section id="certs" className="sec certs" aria-labelledby="h-certs">
       <Head id="h-certs" title={c.title} sub={c.sub} />
-      {[CERTS.slice(0, Math.ceil(CERTS.length / 2)), CERTS.slice(Math.ceil(CERTS.length / 2))].map((row, ri) => (
-        <Marquee key={ri} label={`${c.title} ${ri + 1}`} items={row} speed={45} reverse={ri === 1} render={(x, k) => (
+      {(() => {
+        const card = (x, k) => (
           <figure className="cert" key={k}>
             <button className="doc" onClick={() => setSel(x)} aria-label={name(x)}><Img x={x} /></button>
-            <figcaption><strong>{name(x)}</strong><span>{x.issuer || c.issuer} · {x.year}</span></figcaption>
+            <figcaption><strong>{name(x)}</strong><span>{x.issuer || c.issuer}{x.year ? ` · ${x.year}` : ''}</span></figcaption>
           </figure>
-        )} />
-      ))}
+        )
+        if (CERTS.length <= 4) return <div className="cert-static">{CERTS.map((x) => card(x, x.id))}</div>
+        return [CERTS.slice(0, Math.ceil(CERTS.length / 2)), CERTS.slice(Math.ceil(CERTS.length / 2))].map((row, ri) => (
+          <Marquee key={ri} label={`${c.title} ${ri + 1}`} items={row} min={6} speed={45} reverse={ri === 1} render={card} />
+        ))
+      })()}
       <AnimatePresence>
         {sel && (
           <Modal label={name(sel)} onClose={() => setSel(null)}>
@@ -409,7 +416,7 @@ export default function App() {
     return () => window.removeEventListener('hashchange', on)
   }, [])
   const current = (journey.find((r) => r.progress === 'current') || {}).semester || 1
-  const [active, pickActive] = useActive()
+  const [active, pickActive] = useActive(!semView && !(hasSupabase && db === null))
   const { scrollYProgress } = useScroll()
   const bar = useSpring(scrollYProgress, { stiffness: 140, damping: 28, mass: 0.2 })
   useEffect(() => { document.documentElement.lang = lang }, [lang])
