@@ -24,7 +24,7 @@ export const copy = {
     certs: { title: 'Sertifikat', sub: 'Koleksi dokumen digital. Klik untuk memperbesar.', title1: '[NAMA SERTIFIKAT]', issuer: '[PENERBIT]', year: 'Tahun terbit', cred: 'Tautan kredensial', close: 'Tutup', prev: 'Geser ke kiri', next: 'Geser ke kanan', img: '[GAMBAR SERTIFIKAT]', empty: 'Sertifikat segera hadir.' },
     contact: { title: 'Ayo terhubung.', sub: 'Ayo terhubung, berbagi ide, dan menciptakan sesuatu yang bermakna bersama!', btn: 'Kirim email', footer: 'Dibuat dengan kode, kopi, dan rasa penasaran.', top: 'Kembali ke atas', copyright: '© 2026 Gita Cahya' },
     pubs: { title: 'Karya Tulis & Proyek Akademik', sub: 'Review paper, makalah, dan kajian akademik yang kutulis. Klik kartu untuk detail.', link: 'Buka tautan', pdf: 'Unduh PDF' },
-    ui: { close: 'Tutup', home: 'Beranda', language: 'Bahasa', mainNav: 'Navigasi utama', photoAlt: 'Foto Gita Cahya' },
+    ui: { close: 'Tutup', home: 'Beranda', language: 'Bahasa', mainNav: 'Navigasi utama', photoAlt: 'Foto Gita Cahya', darkMode: 'Aktifkan mode gelap', lightMode: 'Aktifkan mode terang' },
   },
   en: {
     nav: { home: 'Home', about: 'About', journey: 'Learning Journey', projects: 'What I Made', publications: 'Writing', certs: 'Certificates', contact: 'Contact' },
@@ -48,6 +48,6 @@ export const copy = {
     certs: { title: 'Certificates', sub: 'A collection of digital documents. Click to enlarge.', title1: '[CERTIFICATE NAME]', issuer: '[ISSUER]', year: 'Issue year', cred: 'Credential link', close: 'Close', prev: 'Scroll left', next: 'Scroll right', img: '[CERTIFICATE IMAGE]', empty: 'Certificates are coming soon.' },
     contact: { title: "Let's connect.", sub: "Let's connect, share ideas, and create something meaningful together!", btn: 'Send email', footer: 'Made with code, coffee, and curiosity.', top: 'Back to top', copyright: '© 2026 Gita Cahya' },
     pubs: { title: 'Written Works & Academic Projects', sub: 'Review papers, essays, and academic studies I have written. Click a card for details.', link: 'Open link', pdf: 'Download PDF' },
-    ui: { close: 'Close', home: 'Home', language: 'Language', mainNav: 'Main navigation', photoAlt: 'Photo of Gita Cahya' },
+    ui: { close: 'Close', home: 'Home', language: 'Language', mainNav: 'Main navigation', photoAlt: 'Photo of Gita Cahya', darkMode: 'Switch to dark mode', lightMode: 'Switch to light mode' },
   },
 }

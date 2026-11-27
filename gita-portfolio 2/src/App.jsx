@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo, createContext, useContext } from 'react'
 import { motion, MotionConfig, AnimatePresence, useScroll, useSpring } from 'framer-motion'
-import { Menu, X, ArrowDown, ArrowLeft, ArrowUpRight, Mail, Github, Linkedin, Instagram, Globe } from 'lucide-react'
+import { Menu, X, ArrowDown, ArrowLeft, ArrowUpRight, Mail, Github, Linkedin, Instagram, Globe, Moon, Sun } from 'lucide-react'
 import { copy, SECTIONS } from './i18n.js'
 import JourneyMap from './JourneyMap.jsx'
 import { hasSupabase } from './lib/supabase.js'
@@ -68,7 +68,7 @@ function useActive(ready, sections) {
   return [active, pick]
 }
 
-function Nav({ t, lang, setLang, active, onPick, sections }) {
+function Nav({ t, lang, setLang, active, onPick, sections, theme, setTheme }) {
   const [open, setOpen] = useState(false)
   const [stuck, setStuck] = useState(false)
   const ref = useRef(null)
@@ -104,6 +104,7 @@ function Nav({ t, lang, setLang, active, onPick, sections }) {
         <div className="lang" role="group" aria-label={t.ui.language}>
           {['id', 'en'].map((l) => <button key={l} className={lang === l ? 'on' : ''} aria-pressed={lang === l} onClick={() => setLang(l)}>{l.toUpperCase()}</button>)}
         </div>
+        <button className="theme-btn" aria-label={theme === 'dark' ? t.ui.lightMode : t.ui.darkMode} title={theme === 'dark' ? t.ui.lightMode : t.ui.darkMode} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>{theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}</button>
         <button className="burger" aria-expanded={open} aria-controls="main-nav" aria-label={t.menu} onClick={() => setOpen(!open)}>{open ? <X size={18} /> : <Menu size={18} />}</button>
       </div>
     </header>
@@ -410,6 +411,11 @@ export default function App() {
     m = h.match(/^#project-([\w-]+)$/); if (m) return { focus: { uid: m[1] } }
     return {}
   }
+  const [theme, setTheme] = useState(() => { try { if (localStorage.getItem('theme') === 'dark') return 'dark' } catch { /* abaikan */ } return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light' })
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    try { localStorage.setItem('theme', theme) } catch { /* mode privat: abaikan */ }
+  }, [theme])
   const [semView, setSemView] = useState(() => parse().sem || null)
   const [focus, setFocus] = useState(() => { const f = parse().focus; return f ? { ...f, k: 0 } : null })
   useEffect(() => {
@@ -450,7 +456,7 @@ export default function App() {
     <UiCtx.Provider value={t.ui}><MotionConfig reducedMotion="user">
       <a className="skip" href="#main">{t.skip}</a>
       <motion.div className="progress" style={{ scaleX: bar }} aria-hidden="true" />
-      <Nav t={t} lang={lang} setLang={setLang} active={semView ? 'journey' : active} onPick={pickActive} sections={sections} />
+      <Nav t={t} lang={lang} setLang={setLang} active={semView ? 'journey' : active} onPick={pickActive} sections={sections} theme={theme} setTheme={setTheme} />
       <main id="main">{semView
         ? <SemesterPage t={t} lang={lang} row={journey.find((r) => r.semester === semView) || { semester: semView, progress: 'upcoming', tagline: '', headline: '', lead: '', intro: '', areas: [], tech_learning: [], tech_explored: [], tech_used: [], reflection: '' }} projects={projects.items.filter((x) => x.semester === `Semester ${semView}`)} />
         : <><Hero t={t} socials={socials} cv={gen.cv} photo={gen.photo} />

@@ -3248,3 +3248,42 @@ main { overflow-x: clip }
 
 /* Navigasi: matikan snap sebentar saat klik menu, supaya satu klik langsung sampai */
 html.snap.nosnap { scroll-snap-type: none !important }
+
+/* ===== Dark mode ===== */
+.theme-btn {
+  display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+  background: rgba(248, 244, 239, .38); color: var(--ink); border: 1.5px solid rgba(140, 59, 85, .55);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+  transition: transform .2s, background .2s;
+}
+.theme-btn:hover { transform: rotate(-12deg) scale(1.06) }
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cream: #1B1619; --ink: #F2E9E6; --rose: #E3A0B5; --rose2: #F0B8C8;
+  --butter: #33262C; --peach: #33262C; --pink: #3A2B32; --mint: #33262C; --lav: #33262C;
+  --hl: 1px solid rgba(242, 233, 230, .22);
+}
+html[data-theme="dark"] body { background: var(--cream); color: var(--ink) }
+html[data-theme="dark"] .nav-r .lang, html[data-theme="dark"] .theme-btn { background: rgba(27, 22, 25, .6) !important; border-color: rgba(227, 160, 181, .5); box-shadow: 0 6px 18px rgba(0, 0, 0, .35) }
+html[data-theme="dark"] .lj-sem, html[data-theme="dark"] .lj-block { background: rgba(255, 255, 255, .05) }
+html[data-theme="dark"] .lj-made a { background: rgba(255, 255, 255, .06) }
+html[data-theme="dark"] .lj-made a:hover { background: var(--pink) }
+html[data-theme="dark"] .detail > div { border-top-color: rgba(242, 233, 230, .16) }
+html[data-theme="dark"] .ph { background-image: repeating-linear-gradient(135deg, transparent 0 12px, rgba(255, 255, 255, .06) 12px 24px) }
+html[data-theme="dark"] img { filter: brightness(.94) }
+html[data-theme="dark"] .jm-trail { stroke: rgba(242, 233, 230, .45) }
+html[data-theme="dark"] .jm-sh { background: rgba(0, 0, 0, .35) }
+html[data-theme="dark"] .jm-banner { background-image: radial-gradient(rgba(242, 233, 230, .14) 1.2px, transparent 1.6px) }
+html[data-theme="dark"] .jm-banner .big { filter: drop-shadow(0 6px 0 rgba(0, 0, 0, .45)) }
+html[data-theme="dark"] .jm-land { background:
+  radial-gradient(circle at 18% 30%, #2E2328 0 14%, transparent 15%), radial-gradient(circle at 70% 70%, #342830 0 18%, transparent 19%),
+  radial-gradient(circle at 85% 20%, #2A2025 0 12%, transparent 13%), radial-gradient(circle at 45% 85%, #2E2328 0 12%, transparent 13%),
+  radial-gradient(rgba(227, 160, 181, .14) 1.2px, transparent 1.6px) 0 0 / 22px 22px, #1B1619 }
+html[data-theme="dark"] .doc { background: #2B2328 }
+
+/* Dark mode: bar atas & menu HP */
+@media (max-width: 1020px) {
+  html[data-theme="dark"] header.nav { background: rgba(27, 22, 25, .88) !important; border-color: rgba(227, 160, 181, .35) !important; box-shadow: 0 8px 24px rgba(0, 0, 0, .45) !important }
+  html[data-theme="dark"] header.nav nav { background: rgba(27, 22, 25, .98) !important; border-color: rgba(227, 160, 181, .3) !important; box-shadow: 0 18px 40px rgba(0, 0, 0, .55) }
+  html[data-theme="dark"] header.nav nav a { color: var(--ink) }
+}
