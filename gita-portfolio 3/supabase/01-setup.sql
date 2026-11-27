@@ -95,7 +95,10 @@ alter table public.publications
   add column if not exists external_url text check (external_url is null or external_url ~* '^https?://'),
   add column if not exists sort_order int not null default 0,
   add column if not exists title_id text check (char_length(title_id) <= 240),
-  add column if not exists description_id text check (char_length(description_id) <= 4000);
+  add column if not exists description_id text check (char_length(description_id) <= 4000),
+  add column if not exists kind text check (char_length(kind) <= 80),
+  add column if not exists kind_id text check (char_length(kind_id) <= 80),
+  add column if not exists file_url text;
 
 alter table public.journey_steps
   add column if not exists tag_en text, add column if not exists tag_id text, add column if not exists title_en text, add column if not exists title_id text,
