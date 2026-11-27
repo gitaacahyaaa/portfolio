@@ -3231,3 +3231,20 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--rose); outline-
 
 /* Cegah halaman bisa digeser ke samping di HP (peta About sedikit melebar) */
 main { overflow-x: clip }
+
+/* ===== Detail project (pop-up): judul bagian jelas terpisah dari isinya ===== */
+.detail { gap: 0; margin: 14px 0 6px }
+.detail > div { padding: 16px 0; border-top: 1px solid rgba(37, 31, 34, .14) }
+.detail > div:first-child { border-top: 0; padding-top: 6px }
+.detail dt {
+  font: 700 .72rem/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--rose); margin: 0 0 8px;
+}
+.detail dd { font-size: 1rem; line-height: 1.65; color: var(--ink) }
+.detail dd ul { padding-left: 1.2em; list-style: disc }
+.detail dd li { margin: 5px 0 }
+.detail dd li::marker { color: var(--rose) }
+.detail dd.chips { gap: 8px }
+
+/* Navigasi: matikan snap sebentar saat klik menu, supaya satu klik langsung sampai */
+html.snap.nosnap { scroll-snap-type: none !important }

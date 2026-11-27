@@ -431,6 +431,13 @@ export default function App() {
   useEffect(() => { document.documentElement.lang = lang }, [lang])
   // Full-page scroll snap hanya di halaman utama (bukan halaman detail semester)
   useEffect(() => { const el = document.documentElement; el.classList.toggle('snap', !semView); return () => el.classList.remove('snap') }, [semView])
+  // Klik link #anchor (menu, tombol hero, "kembali ke atas"): matikan snap sebentar supaya scroll tidak tertahan di tengah jalan
+  useEffect(() => {
+    const el = document.documentElement; let t
+    const hold = (e) => { if (!e.target.closest?.('a[href^="#"]')) return; el.classList.add('nosnap'); clearTimeout(t); t = setTimeout(() => el.classList.remove('nosnap'), 1200) }
+    document.addEventListener('click', hold, true)
+    return () => { document.removeEventListener('click', hold, true); clearTimeout(t); el.classList.remove('nosnap') }
+  }, [])
   useEffect(() => {
     document.title = gen.title
     let m = document.querySelector('meta[name="description"]')
